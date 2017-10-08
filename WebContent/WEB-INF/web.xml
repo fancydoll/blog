@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+  <servlet>
+    <servlet-name>getArticle</servlet-name>
+    <servlet-class>Server.getArticleServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>getArticle</servlet-name>
+    <url-pattern>/getArticle</url-pattern>
+  </servlet-mapping>
+	
+	<servlet>
+	    <servlet-name>findArticle</servlet-name>
+	    <servlet-class>controller.findArticleServlet</servlet-class>
+  	</servlet>
+	<servlet-mapping>
+	    <servlet-name>findArticle</servlet-name>
+	    <url-pattern>/findArticle</url-pattern>
+	</servlet-mapping>
+</web-app>

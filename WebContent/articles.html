@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>博客文章</title>
+		<link rel="stylesheet"  type="text/css"  href="css/mouseover.css"/>
+		<link rel="stylesheet"  type="text/css" href="css/articles.css"/>
+		<script src="js/jquery-3.1.0.js"></script>
+		<script src="js/vue.js"></script>
+		<script>
+		$(function($){
+			var ipage = 1;
+			var items;
+			var xid = 1;
+			var flag = 1;
+			function findArticle(xid,ipage){
+				$.ajax({
+					type:"POST",
+					url:"findArticle",
+					async:false,
+					data:"xid="+xid+"&ipage="+ipage,
+					success:function(msg){
+						items = eval("("+msg"})");
+					}
+				});
+			}
+			findArticle(xid,ipage);
+		
+			var ma = new Vue({
+			    el: '#findArticle',
+			    data:{
+					   article:items
+				   }
+			});
+			
+			//按钮绑定
+			$(".next").click(function(){
+				  ipage++;
+				  findMajor(xid,ipage);
+				  if(items == ""){
+						flag = 0;
+					}
+				  if(flag == 0){
+						$(".next").hide();
+					}
+				  $(".contain").hide();
+				  setTimeout(major2,1000);
+				  ma.$set(ma.$data,"article",items);
+			});
+			$(".pre").click(function(){
+				ipage--;
+				  findMajor(xid,ipage);
+				  $(".contain").hide();
+				  setTimeout(major2,1000);
+				  ma.$set(ma.$data,"article",items);
+			});
+			$(".top").click(function(){
+				ipage = 1;
+				$(".next").show();
+				findMajor(xid,ipage);
+				$(".contain").hide();
+				setTimeout(major2,1000);
+				ma.$set(ma.$data,"article",items);
+			});
+			function major2(){
+				$(window).scrollTop(100);
+				$(".contain").show();
+			}
+			
+		//	获取不同的分类
+		$(".major li").click(function(){
+			flag = 1;
+			ipage = 1;
+			xid = $(this).attr("xid");
+			findMajor(xid,ipage);
+			ma.$set(ma.$data,"major",items);
+		});
+		});
+		</script>
+	</head>
+	<body>
+		<div class="head">
+			<i>blog</i>
+			<div class="nav">
+				<ul class="top-nav">
+					<li><a href="index.html">首&nbsp;&nbsp;页</a></li>
+					<li><a href="article.html">学习文章</a></li>
+					<li><a href="articles.html">随性随心</a></li>
+					<li><a href="brief.html">简&nbsp;&nbsp;介</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--导航条结束-->
+		<!--图片开始-->
+		<div class="imager">
+			<section class="box">
+				<ul class="texts">
+					<p>照见五蕴皆空，度一切苦厄</p>
+					<p>人生若只如初见，何事西风悲画扇</p>
+					<p>交友须带三分侠气，做人要存一点素心</p>
+				</ul>
+				<div class="avter">
+					<a href="#">
+						<span>fancy</span>
+					</a>
+				</div>
+			</section>
+		</div>
+		<!--图片结束-->
+		<!--内容开始-->
+		<div class="nav-contain">
+			<div class="nav2">
+				<ul class="major">
+					<li xid=6><a href="#">碎碎念</a>
+					<li xid=7><a href="#">游戏攻略</a>
+				</ul>
+			</div>
+			<div class="contain" id="findArticle">
+				<div class="contains" v-for="m in article">
+					<h3>{{m.name}}</h3>
+					<img  v-bind:src="m.img"/>
+					<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{m.dec}}</p>
+				</div>
+			</div>
+		</div>
+		<div class="buttons">
+			<button class="top">首页</button>
+			<button class="next">下一页</button>
+			<button class="pre">上一页</button>
+		</div>
+		<!--内容结束 -->
+		<!--结尾开始-->
+		<div class="footer">
+			<div class="footers"><p>Li's Blog</p></div>
+			<div class="footer-p">
+				<p>如果没有你</p>
+				<p>我独自站在这里</p>
+				<p>又是为了什么</p>
+			</div>
+		</div>
+		<!--结束-->
+	</body>
+</html>
+
